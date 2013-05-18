@@ -29,26 +29,53 @@
         private void InitializeComponent()
         {
             this.uxStatusStrip = new System.Windows.Forms.StatusStrip();
-            this.uxMenuStrip = new System.Windows.Forms.MenuStrip();
             this.uxStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.uxMenuStrip = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.narzędziaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autobaudingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ręczneSterowanieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxMainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.uxModeTabs = new System.Windows.Forms.TabControl();
             this.uxTextModeTab = new System.Windows.Forms.TabPage();
+            this.uxTextSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.uxSendTextButton = new System.Windows.Forms.Button();
+            this.uxTransmitTextTextBox = new System.Windows.Forms.TextBox();
+            this.uxReceivedTextClearButton = new System.Windows.Forms.Button();
+            this.uxReceivedTextTextBox = new System.Windows.Forms.TextBox();
             this.uxBinaryModeTab = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.uxPortListRefreshButton = new System.Windows.Forms.Button();
+            this.uxStopBitsComboBox = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.uxParityComboBox = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.uxDisconnectButton = new System.Windows.Forms.Button();
+            this.uxConnectButton = new System.Windows.Forms.Button();
+            this.uxTerminatorTextBox = new System.Windows.Forms.TextBox();
+            this.uxTerminatorComboBox = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.uxDataControlFlowComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.uxDataBitsComboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.uxSpeedComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.uxPortComboBox = new System.Windows.Forms.ComboBox();
+            this.uxPortListRefreshButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.uxStatusStrip.SuspendLayout();
             this.uxMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).BeginInit();
+            this.uxMainSplitContainer.Panel1.SuspendLayout();
+            this.uxMainSplitContainer.Panel2.SuspendLayout();
+            this.uxMainSplitContainer.SuspendLayout();
             this.uxModeTabs.SuspendLayout();
+            this.uxTextModeTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).BeginInit();
+            this.uxTextSplitContainer.Panel1.SuspendLayout();
+            this.uxTextSplitContainer.Panel2.SuspendLayout();
+            this.uxTextSplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // uxStatusStrip
@@ -61,6 +88,12 @@
             this.uxStatusStrip.TabIndex = 0;
             this.uxStatusStrip.Text = "statusStrip";
             // 
+            // uxStripStatusLabel
+            // 
+            this.uxStripStatusLabel.Name = "uxStripStatusLabel";
+            this.uxStripStatusLabel.Size = new System.Drawing.Size(118, 17);
+            this.uxStripStatusLabel.Text = "toolStripStatusLabel1";
+            // 
             // uxMenuStrip
             // 
             this.uxMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -72,42 +105,18 @@
             this.uxMenuStrip.TabIndex = 1;
             this.uxMenuStrip.Text = "menuStrip1";
             // 
-            // uxStripStatusLabel
-            // 
-            this.uxStripStatusLabel.Name = "uxStripStatusLabel";
-            this.uxStripStatusLabel.Size = new System.Drawing.Size(118, 17);
-            this.uxStripStatusLabel.Text = "toolStripStatusLabel1";
-            // 
             // plikToolStripMenuItem
             // 
             this.plikToolStripMenuItem.Name = "plikToolStripMenuItem";
             this.plikToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.plikToolStripMenuItem.Text = "Plik";
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.uxModeTabs);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.uxPortComboBox);
-            this.splitContainer1.Panel2.Controls.Add(this.uxPortListRefreshButton);
-            this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Size = new System.Drawing.Size(841, 419);
-            this.splitContainer1.SplitterDistance = 564;
-            this.splitContainer1.TabIndex = 2;
-            // 
             // narzędziaToolStripMenuItem
             // 
             this.narzędziaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pingToolStripMenuItem,
-            this.autobaudingToolStripMenuItem});
+            this.autobaudingToolStripMenuItem,
+            this.ręczneSterowanieToolStripMenuItem});
             this.narzędziaToolStripMenuItem.Name = "narzędziaToolStripMenuItem";
             this.narzędziaToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.narzędziaToolStripMenuItem.Text = "Narzędzia";
@@ -115,14 +124,55 @@
             // pingToolStripMenuItem
             // 
             this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
-            this.pingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pingToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.pingToolStripMenuItem.Text = "Ping";
             // 
             // autobaudingToolStripMenuItem
             // 
             this.autobaudingToolStripMenuItem.Name = "autobaudingToolStripMenuItem";
-            this.autobaudingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.autobaudingToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.autobaudingToolStripMenuItem.Text = "Autobauding";
+            // 
+            // ręczneSterowanieToolStripMenuItem
+            // 
+            this.ręczneSterowanieToolStripMenuItem.Name = "ręczneSterowanieToolStripMenuItem";
+            this.ręczneSterowanieToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.ręczneSterowanieToolStripMenuItem.Text = "Ręczne sterowanie";
+            // 
+            // uxMainSplitContainer
+            // 
+            this.uxMainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uxMainSplitContainer.Location = new System.Drawing.Point(0, 24);
+            this.uxMainSplitContainer.Name = "uxMainSplitContainer";
+            // 
+            // uxMainSplitContainer.Panel1
+            // 
+            this.uxMainSplitContainer.Panel1.Controls.Add(this.uxModeTabs);
+            // 
+            // uxMainSplitContainer.Panel2
+            // 
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxStopBitsComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label8);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxParityComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label7);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxDisconnectButton);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxConnectButton);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxTerminatorTextBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxTerminatorComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label6);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxDataControlFlowComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label5);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxDataBitsComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label4);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxSpeedComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label3);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label2);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxPortComboBox);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxPortListRefreshButton);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label1);
+            this.uxMainSplitContainer.Size = new System.Drawing.Size(841, 419);
+            this.uxMainSplitContainer.SplitterDistance = 473;
+            this.uxMainSplitContainer.TabIndex = 2;
             // 
             // uxModeTabs
             // 
@@ -132,28 +182,294 @@
             this.uxModeTabs.Location = new System.Drawing.Point(0, 0);
             this.uxModeTabs.Name = "uxModeTabs";
             this.uxModeTabs.SelectedIndex = 0;
-            this.uxModeTabs.Size = new System.Drawing.Size(564, 419);
+            this.uxModeTabs.Size = new System.Drawing.Size(473, 419);
             this.uxModeTabs.TabIndex = 0;
             // 
             // uxTextModeTab
             // 
+            this.uxTextModeTab.Controls.Add(this.uxTextSplitContainer);
             this.uxTextModeTab.Location = new System.Drawing.Point(4, 22);
             this.uxTextModeTab.Name = "uxTextModeTab";
             this.uxTextModeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.uxTextModeTab.Size = new System.Drawing.Size(556, 393);
+            this.uxTextModeTab.Size = new System.Drawing.Size(465, 393);
             this.uxTextModeTab.TabIndex = 0;
             this.uxTextModeTab.Text = "Tryb tekstowy";
             this.uxTextModeTab.UseVisualStyleBackColor = true;
+            // 
+            // uxTextSplitContainer
+            // 
+            this.uxTextSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uxTextSplitContainer.IsSplitterFixed = true;
+            this.uxTextSplitContainer.Location = new System.Drawing.Point(3, 3);
+            this.uxTextSplitContainer.Name = "uxTextSplitContainer";
+            this.uxTextSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // uxTextSplitContainer.Panel1
+            // 
+            this.uxTextSplitContainer.Panel1.Controls.Add(this.uxSendTextButton);
+            this.uxTextSplitContainer.Panel1.Controls.Add(this.uxTransmitTextTextBox);
+            this.uxTextSplitContainer.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
+            // uxTextSplitContainer.Panel2
+            // 
+            this.uxTextSplitContainer.Panel2.Controls.Add(this.uxReceivedTextClearButton);
+            this.uxTextSplitContainer.Panel2.Controls.Add(this.uxReceivedTextTextBox);
+            this.uxTextSplitContainer.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.uxTextSplitContainer.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.uxTextSplitContainer.Size = new System.Drawing.Size(459, 387);
+            this.uxTextSplitContainer.SplitterDistance = 190;
+            this.uxTextSplitContainer.TabIndex = 0;
+            // 
+            // uxSendTextButton
+            // 
+            this.uxSendTextButton.Enabled = false;
+            this.uxSendTextButton.Location = new System.Drawing.Point(381, 164);
+            this.uxSendTextButton.Name = "uxSendTextButton";
+            this.uxSendTextButton.Size = new System.Drawing.Size(75, 23);
+            this.uxSendTextButton.TabIndex = 2;
+            this.uxSendTextButton.Text = "Wyślij";
+            this.uxSendTextButton.UseVisualStyleBackColor = true;
+            this.uxSendTextButton.Click += new System.EventHandler(this.uxSendTextButton_Click);
+            // 
+            // uxTransmitTextTextBox
+            // 
+            this.uxTransmitTextTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uxTransmitTextTextBox.Location = new System.Drawing.Point(0, 0);
+            this.uxTransmitTextTextBox.Multiline = true;
+            this.uxTransmitTextTextBox.Name = "uxTransmitTextTextBox";
+            this.uxTransmitTextTextBox.Size = new System.Drawing.Size(459, 158);
+            this.uxTransmitTextTextBox.TabIndex = 1;
+            // 
+            // uxReceivedTextClearButton
+            // 
+            this.uxReceivedTextClearButton.Location = new System.Drawing.Point(381, 167);
+            this.uxReceivedTextClearButton.Name = "uxReceivedTextClearButton";
+            this.uxReceivedTextClearButton.Size = new System.Drawing.Size(75, 23);
+            this.uxReceivedTextClearButton.TabIndex = 3;
+            this.uxReceivedTextClearButton.Text = "Wyczyść";
+            this.uxReceivedTextClearButton.UseVisualStyleBackColor = true;
+            // 
+            // uxReceivedTextTextBox
+            // 
+            this.uxReceivedTextTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uxReceivedTextTextBox.Location = new System.Drawing.Point(0, 0);
+            this.uxReceivedTextTextBox.Multiline = true;
+            this.uxReceivedTextTextBox.Name = "uxReceivedTextTextBox";
+            this.uxReceivedTextTextBox.Size = new System.Drawing.Size(459, 158);
+            this.uxReceivedTextTextBox.TabIndex = 2;
             // 
             // uxBinaryModeTab
             // 
             this.uxBinaryModeTab.Location = new System.Drawing.Point(4, 22);
             this.uxBinaryModeTab.Name = "uxBinaryModeTab";
             this.uxBinaryModeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.uxBinaryModeTab.Size = new System.Drawing.Size(523, 376);
+            this.uxBinaryModeTab.Size = new System.Drawing.Size(465, 393);
             this.uxBinaryModeTab.TabIndex = 1;
             this.uxBinaryModeTab.Text = "Tryb binarny";
             this.uxBinaryModeTab.UseVisualStyleBackColor = true;
+            // 
+            // uxStopBitsComboBox
+            // 
+            this.uxStopBitsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxStopBitsComboBox.FormattingEnabled = true;
+            this.uxStopBitsComboBox.Items.AddRange(new object[] {
+            "1",
+            "2"});
+            this.uxStopBitsComboBox.Location = new System.Drawing.Point(127, 130);
+            this.uxStopBitsComboBox.Name = "uxStopBitsComboBox";
+            this.uxStopBitsComboBox.Size = new System.Drawing.Size(80, 21);
+            this.uxStopBitsComboBox.TabIndex = 19;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 133);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(56, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Bity stopu:";
+            // 
+            // uxParityComboBox
+            // 
+            this.uxParityComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxParityComboBox.FormattingEnabled = true;
+            this.uxParityComboBox.Items.AddRange(new object[] {
+            "Brak",
+            "Parzytość",
+            "Nieparzystość"});
+            this.uxParityComboBox.Location = new System.Drawing.Point(127, 103);
+            this.uxParityComboBox.Name = "uxParityComboBox";
+            this.uxParityComboBox.Size = new System.Drawing.Size(80, 21);
+            this.uxParityComboBox.TabIndex = 17;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(16, 106);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(61, 13);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "Parzystość:";
+            // 
+            // uxDisconnectButton
+            // 
+            this.uxDisconnectButton.Enabled = false;
+            this.uxDisconnectButton.Location = new System.Drawing.Point(100, 219);
+            this.uxDisconnectButton.Name = "uxDisconnectButton";
+            this.uxDisconnectButton.Size = new System.Drawing.Size(75, 23);
+            this.uxDisconnectButton.TabIndex = 15;
+            this.uxDisconnectButton.Text = "Rozłącz";
+            this.uxDisconnectButton.UseVisualStyleBackColor = true;
+            this.uxDisconnectButton.Click += new System.EventHandler(this.uxDisconnectButton_Click);
+            // 
+            // uxConnectButton
+            // 
+            this.uxConnectButton.Location = new System.Drawing.Point(19, 219);
+            this.uxConnectButton.Name = "uxConnectButton";
+            this.uxConnectButton.Size = new System.Drawing.Size(75, 23);
+            this.uxConnectButton.TabIndex = 14;
+            this.uxConnectButton.Text = "Połącz";
+            this.uxConnectButton.UseVisualStyleBackColor = true;
+            this.uxConnectButton.Click += new System.EventHandler(this.uxConnectButton_Click);
+            // 
+            // uxTerminatorTextBox
+            // 
+            this.uxTerminatorTextBox.Location = new System.Drawing.Point(254, 184);
+            this.uxTerminatorTextBox.MaxLength = 4;
+            this.uxTerminatorTextBox.Name = "uxTerminatorTextBox";
+            this.uxTerminatorTextBox.Size = new System.Drawing.Size(75, 20);
+            this.uxTerminatorTextBox.TabIndex = 13;
+            // 
+            // uxTerminatorComboBox
+            // 
+            this.uxTerminatorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxTerminatorComboBox.FormattingEnabled = true;
+            this.uxTerminatorComboBox.Items.AddRange(new object[] {
+            "CR",
+            "LF",
+            "CR-LF",
+            "Własny"});
+            this.uxTerminatorComboBox.Location = new System.Drawing.Point(127, 184);
+            this.uxTerminatorComboBox.Name = "uxTerminatorComboBox";
+            this.uxTerminatorComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxTerminatorComboBox.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 187);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(60, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Terminator:";
+            // 
+            // uxDataControlFlowComboBox
+            // 
+            this.uxDataControlFlowComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxDataControlFlowComboBox.FormattingEnabled = true;
+            this.uxDataControlFlowComboBox.Items.AddRange(new object[] {
+            "Brak",
+            "Sprzętowa",
+            "XON/XOF"});
+            this.uxDataControlFlowComboBox.Location = new System.Drawing.Point(127, 157);
+            this.uxDataControlFlowComboBox.Name = "uxDataControlFlowComboBox";
+            this.uxDataControlFlowComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxDataControlFlowComboBox.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(16, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(101, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Kontrola przepływu:";
+            // 
+            // uxDataBitsComboBox
+            // 
+            this.uxDataBitsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxDataBitsComboBox.FormattingEnabled = true;
+            this.uxDataBitsComboBox.Items.AddRange(new object[] {
+            "7",
+            "8"});
+            this.uxDataBitsComboBox.Location = new System.Drawing.Point(127, 76);
+            this.uxDataBitsComboBox.Name = "uxDataBitsComboBox";
+            this.uxDataBitsComboBox.Size = new System.Drawing.Size(80, 21);
+            this.uxDataBitsComboBox.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 79);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Bity pola danych:";
+            // 
+            // uxSpeedComboBox
+            // 
+            this.uxSpeedComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxSpeedComboBox.FormattingEnabled = true;
+            this.uxSpeedComboBox.Items.AddRange(new object[] {
+            "150",
+            "200",
+            "300",
+            "600",
+            "1200",
+            "1800",
+            "2400",
+            "3600",
+            "4800",
+            "7200",
+            "9600",
+            "14400",
+            "19200",
+            "28800",
+            "38400",
+            "56000",
+            "57600",
+            "115200"});
+            this.uxSpeedComboBox.Location = new System.Drawing.Point(127, 49);
+            this.uxSpeedComboBox.Name = "uxSpeedComboBox";
+            this.uxSpeedComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxSpeedComboBox.TabIndex = 6;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Szybkość:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(16, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Port:";
+            // 
+            // uxPortComboBox
+            // 
+            this.uxPortComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uxPortComboBox.FormattingEnabled = true;
+            this.uxPortComboBox.Location = new System.Drawing.Point(127, 22);
+            this.uxPortComboBox.Name = "uxPortComboBox";
+            this.uxPortComboBox.Size = new System.Drawing.Size(121, 21);
+            this.uxPortComboBox.TabIndex = 3;
+            // 
+            // uxPortListRefreshButton
+            // 
+            this.uxPortListRefreshButton.Location = new System.Drawing.Point(254, 22);
+            this.uxPortListRefreshButton.Name = "uxPortListRefreshButton";
+            this.uxPortListRefreshButton.Size = new System.Drawing.Size(75, 23);
+            this.uxPortListRefreshButton.TabIndex = 2;
+            this.uxPortListRefreshButton.Text = "Odśwież";
+            this.uxPortListRefreshButton.UseVisualStyleBackColor = true;
+            this.uxPortListRefreshButton.Click += new System.EventHandler(this.uxPortListRefreshButton_Click);
             // 
             // label1
             // 
@@ -165,31 +481,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Konfiguracja portu";
             // 
-            // uxPortListRefreshButton
-            // 
-            this.uxPortListRefreshButton.Location = new System.Drawing.Point(132, 22);
-            this.uxPortListRefreshButton.Name = "uxPortListRefreshButton";
-            this.uxPortListRefreshButton.Size = new System.Drawing.Size(75, 23);
-            this.uxPortListRefreshButton.TabIndex = 2;
-            this.uxPortListRefreshButton.Text = "Odśwież";
-            this.uxPortListRefreshButton.UseVisualStyleBackColor = true;
-            this.uxPortListRefreshButton.Click += new System.EventHandler(this.uxPortListRefreshButton_Click);
-            // 
-            // uxPortComboBox
-            // 
-            this.uxPortComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.uxPortComboBox.FormattingEnabled = true;
-            this.uxPortComboBox.Location = new System.Drawing.Point(5, 22);
-            this.uxPortComboBox.Name = "uxPortComboBox";
-            this.uxPortComboBox.Size = new System.Drawing.Size(121, 21);
-            this.uxPortComboBox.TabIndex = 3;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(841, 465);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.uxMainSplitContainer);
             this.Controls.Add(this.uxStatusStrip);
             this.Controls.Add(this.uxMenuStrip);
             this.MainMenuStrip = this.uxMenuStrip;
@@ -199,12 +496,19 @@
             this.uxStatusStrip.PerformLayout();
             this.uxMenuStrip.ResumeLayout(false);
             this.uxMenuStrip.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.uxMainSplitContainer.Panel1.ResumeLayout(false);
+            this.uxMainSplitContainer.Panel2.ResumeLayout(false);
+            this.uxMainSplitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).EndInit();
+            this.uxMainSplitContainer.ResumeLayout(false);
             this.uxModeTabs.ResumeLayout(false);
+            this.uxTextModeTab.ResumeLayout(false);
+            this.uxTextSplitContainer.Panel1.ResumeLayout(false);
+            this.uxTextSplitContainer.Panel1.PerformLayout();
+            this.uxTextSplitContainer.Panel2.ResumeLayout(false);
+            this.uxTextSplitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).EndInit();
+            this.uxTextSplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -219,13 +523,35 @@
         private System.Windows.Forms.ToolStripMenuItem narzędziaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autobaudingToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer uxMainSplitContainer;
         private System.Windows.Forms.TabControl uxModeTabs;
         private System.Windows.Forms.TabPage uxTextModeTab;
         private System.Windows.Forms.TabPage uxBinaryModeTab;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox uxPortComboBox;
         private System.Windows.Forms.Button uxPortListRefreshButton;
+        private System.Windows.Forms.ComboBox uxSpeedComboBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox uxDataBitsComboBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox uxDataControlFlowComboBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripMenuItem ręczneSterowanieToolStripMenuItem;
+        private System.Windows.Forms.ComboBox uxTerminatorComboBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox uxTerminatorTextBox;
+        private System.Windows.Forms.SplitContainer uxTextSplitContainer;
+        private System.Windows.Forms.Button uxDisconnectButton;
+        private System.Windows.Forms.Button uxConnectButton;
+        private System.Windows.Forms.Button uxSendTextButton;
+        private System.Windows.Forms.TextBox uxTransmitTextTextBox;
+        private System.Windows.Forms.TextBox uxReceivedTextTextBox;
+        private System.Windows.Forms.Button uxReceivedTextClearButton;
+        private System.Windows.Forms.ComboBox uxParityComboBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox uxStopBitsComboBox;
+        private System.Windows.Forms.Label label8;
     }
 }
 
