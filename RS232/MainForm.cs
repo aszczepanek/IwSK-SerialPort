@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Be.Windows.Forms;
+using System.IO;
 
 namespace RS232
 {
@@ -16,41 +13,24 @@ namespace RS232
         public MainForm()
         {
             InitializeComponent();
+            
+            // Inicjalizacja HexBoxów
+            uxTransmitHexBox.ByteProvider = new DynamicByteProvider(new byte[] {});
+            uxReceivedHexBox.ByteProvider = new DynamicByteProvider(new byte[] { });
 
-            uxPortComboBox.DataSource = RS232.GetSerialPorts();
+            // Początkowy tryb portu
+            RS232.Instance.SetDataMode(DataModeEnum.TEXT);
+
+            uxPortComboBox.DataSource = SerialPort.GetPortNames();
+
+            // Ustawienie domyślnych parametrów.
             SetDefaultParameters();
-        }
 
-        private void uxPortListRefreshButton_Click(object sender, EventArgs e)
-        {
-            uxPortComboBox.DataSource = RS232.GetSerialPorts();
-        }
-
-        private void uxConnectButton_Click(object sender, EventArgs e)
-        {
-            uxDisconnectButton.Enabled = true;
-            uxConnectButton.Enabled = false;
-            SetupPort();
-            RS232.Instance.Connect();
-            EnableCommunication();
-            RS232.Instance.Port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-        }
-
-        private void uxDisconnectButton_Click(object sender, EventArgs e)
-        {
-            uxDisconnectButton.Enabled = false;
-            uxConnectButton.Enabled = true;
-            RS232.Instance.Disconnect();
+            // Początkowo nie jesteśmy podłączeni.
             DisableCommunication();
-        }
 
-        /// <summary>
-        /// Uaktywnia elementy interfejsu odpowiedzialne za komunikację
-        /// (np. przycisk wyślij).
-        /// </summary>
-        private void EnableCommunication()
-        {
-            uxSendTextButton.Enabled = true;
+            // Rejestracja metody na zdarzenia od klasy RS232.
+            RS232.Instance.Communicate += OnRS232Communicate;
         }
 
         /// <summary>
@@ -60,6 +40,108 @@ namespace RS232
         private void DisableCommunication()
         {
             uxSendTextButton.Enabled = false;
+            uxSendBinaryButton.Enabled = false;
+            uxSendFileButton.Enabled = false;
+
+            // Aktywacja kontrolek parametrów portu.
+            uxPortComboBox.Enabled = true;
+            uxSpeedComboBox.Enabled = true;
+            uxDataBitsComboBox.Enabled = true;
+            uxParityComboBox.Enabled = true;
+            uxStopBitsComboBox.Enabled = true;
+            uxDataControlFlowComboBox.Enabled = true;
+            uxTerminatorComboBox.Enabled = true;
+            uxTerminatorTextBox.Enabled = true;
+            uxAutoboudingMenuItem.Enabled = true;
+
+            uxPingMenuItem.Enabled = false;
+            uxManualControlMenuItem.Enabled = false;
+        }
+
+        /// <summary>
+        /// Uaktywnia elementy interfejsu odpowiedzialne za komunikację
+        /// (np. przycisk wyślij).
+        /// </summary>
+        private void EnableCommunication()
+        {
+            uxSendTextButton.Enabled = true;
+            uxSendBinaryButton.Enabled = true;
+            uxSendFileButton.Enabled = true;
+
+            // Dezaktywacja kontrolek parametrów portu.
+            uxPortComboBox.Enabled = false;
+            uxSpeedComboBox.Enabled = false;
+            uxDataBitsComboBox.Enabled = false;
+            uxParityComboBox.Enabled = false;
+            uxStopBitsComboBox.Enabled = false;
+            uxDataControlFlowComboBox.Enabled = false;
+            uxTerminatorComboBox.Enabled = false;
+            uxTerminatorTextBox.Enabled = false;
+            uxAutoboudingMenuItem.Enabled = false;
+
+            uxPingMenuItem.Enabled = true;
+            uxManualControlMenuItem.Enabled = true;
+        }
+
+        /// <summary>
+        /// Obsługa komunikatów z klasy RS232.
+        /// </summary>
+        /// <param name="arg"></param>
+        private void OnRS232Communicate(RS232CommunicateEventArgs arg)
+        {
+            if (InvokeRequired)
+            {
+                // Aktualizacja kontrolki z innego wątku.
+                RS232.RS232CommunicateDelegate d = new RS232.RS232CommunicateDelegate(OnRS232Communicate);
+                Invoke(d, new object[] { arg });
+                return;
+            }
+
+            switch (arg.Type)
+            {
+                case CommunicateType.TextDataReceived:
+                    uxReceivedTextTextBox.AppendText(arg.TextData + "\n");
+                    break;
+
+                case CommunicateType.BinaryDataReceived:
+                    DynamicByteProvider data = (DynamicByteProvider)uxReceivedHexBox.ByteProvider;
+                    data.InsertBytes(data.Length, arg.BinaryData);
+                    uxReceivedHexBox.Invalidate();
+                    break;
+
+                case CommunicateType.ErrorOccured:
+                    ShowError(arg.ErrorMessage);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void ShowError(string text)
+        {
+            MessageBox.Show(text, "RS232");
+        }
+
+        /// <summary>
+        /// Sprawdza poprawność własnego terminatora.
+        /// </summary>
+        /// <returns>Prawda jeśli poprawny, w przeciwnym razie fałsz.</returns>
+        private bool ValidateTerminator()
+        {
+            if (uxTerminatorTextBox.Text.Length == 2)
+            {
+                Regex terminator = new Regex("[0-9a-fA-F]{2}");
+                return terminator.IsMatch(uxTerminatorTextBox.Text);
+            }
+
+            if (uxTerminatorTextBox.Text.Length == 4)
+            {
+                Regex terminator = new Regex("[0-9a-fA-F]{4}");
+                return terminator.IsMatch(uxTerminatorTextBox.Text);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -78,64 +160,190 @@ namespace RS232
             uxStopBitsComboBox.SelectedIndex = 0;
             uxDataControlFlowComboBox.SelectedIndex = 0;
             uxTerminatorComboBox.SelectedIndex = 0;
+
+            uxTerminatorTextBox.Enabled = false;
         }
 
+        //////////////////////////////////////////////////////////////////////////
+        /// METODY INTERFEJSU
+        //////////////////////////////////////////////////////////////////////////
+        
         /// <summary>
-        /// Ustawia wszystkie paramatry portu w klasie RS232.
+        /// Otwarcie połączenia.
         /// </summary>
-        private void SetupPort()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void uxConnectButton_Click(object sender, EventArgs e)
         {
+            if (uxTerminatorComboBox.SelectedIndex == 3 && !ValidateTerminator())
+            {
+                MessageBox.Show("Trolololo, wpisz dobry terminatorek.");
+                return;
+            }
 
-            RS232 port = RS232.Instance;
-            port.SelectPort(uxPortComboBox.Text);
-            port.SetBaudRate(Int32.Parse(uxSpeedComboBox.Text));
-            port.SetDataBits(Int32.Parse(uxDataBitsComboBox.Text));
+            uxDisconnectButton.Enabled = true;
+            uxConnectButton.Enabled = false;
+            
+            // Parsowanie parametrów
+            string portName = uxPortComboBox.Text;
+            int baudRate = Int32.Parse(uxSpeedComboBox.Text);
+            int dataBits = Int32.Parse(uxDataBitsComboBox.Text);
 
+            StopBits stopBits;
+            switch(Int32.Parse(uxStopBitsComboBox.Text)) {
+                case 0:
+                    stopBits = StopBits.None;
+                    break;
+                case 1:
+                    stopBits = StopBits.One;
+                    break;
+                case 2:
+                    stopBits = StopBits.Two;
+                    break;
+                default:
+                    stopBits = StopBits.None;
+                    break;
+            }
+
+            Parity parity;
             switch (uxParityComboBox.SelectedIndex)
             {
                 case 0:
-                    port.SetParity(Parity.None);
+                    parity = Parity.None;
                     break;
                 case 1:
-                    port.SetParity(Parity.Even);
+                    parity = Parity.Even;
                     break;
                 case 2:
-                    port.SetParity(Parity.Odd);
+                    parity = Parity.Odd;
+                    break;
+                default:
+                    parity = Parity.None;
                     break;
             }
-
-            port.SetStopBits(Int32.Parse(uxStopBitsComboBox.Text));
-
-            switch (uxDataControlFlowComboBox.SelectedIndex)
-            {
-                case 0:
-                    port.SetHandshake(Handshake.None);
-                    break;
-                case 1:
-                    port.SetHandshake(Handshake.RequestToSend);
-                    break;
-                case 2:
-                    port.SetHandshake(Handshake.XOnXOff);
-                    break;
-            }
-
+            
+            string terminator = "\n";
             switch (uxTerminatorComboBox.SelectedIndex)
             {
                 case 0:
                     // CR
-                    port.SetTerminator("\r");
+                    terminator = "\r";
                     break;
                 case 1:
                     // LF
-                    port.SetTerminator("\n");
+                    terminator = "\n";
                     break;
                 case 2:
                     // CR-LF
-                    port.SetTerminator("\r\n");
+                    terminator = "\r\n";
                     break;
                 case 3:
                     // własny termiantor
+                    string hex = uxTerminatorTextBox.Text;
                     break;
+                default:
+                    terminator = "\n";
+                    break;
+            }
+
+            Handshake handshake;
+            switch (uxDataControlFlowComboBox.SelectedIndex)
+            {
+                case 0:
+                    handshake = Handshake.None;
+                    break;
+                case 1:
+                    handshake = Handshake.RequestToSend;
+                    break;
+                case 2:
+                    handshake = Handshake.XOnXOff;
+                    break;
+                default:
+                    handshake = Handshake.None;
+                    break;
+            }
+
+            if (RS232.Instance.Open(portName, baudRate, dataBits, stopBits, parity, terminator, handshake) == 0)
+            {
+                EnableCommunication();
+            }
+            else
+            {
+                ShowError("Nie udało się otworzyć portu!");
+                uxDisconnectButton.Enabled = false;
+                uxConnectButton.Enabled = true;
+            }
+        }
+
+        private void uxDisconnectButton_Click(object sender, EventArgs e)
+        {
+            uxDisconnectButton.Enabled = false;
+            uxConnectButton.Enabled = true;
+            RS232.Instance.Close();
+            DisableCommunication();
+        }
+
+        private void uxManualControlMenuItem_Click(object sender, EventArgs e)
+        {
+            ManualControlForm form = new ManualControlForm();
+            form.Show();
+        }
+
+        private void uxModeTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (uxTabs.SelectedIndex == 0)
+            {
+                RS232.Instance.SetDataMode(DataModeEnum.TEXT);
+                Console.WriteLine("Swtiching to text mode.");
+            }
+            else
+            {
+                RS232.Instance.SetDataMode(DataModeEnum.BINARY);
+                Console.WriteLine("Switching to binary mode.");
+            }
+        }
+
+        private void uxPingMenuItem_Click(object sender, EventArgs e)
+        {
+            // Zapamiętanie poprzedniego trybu.
+            DataModeEnum oldDataMode = RS232.Instance.DataMode;
+            RS232.Instance.SetDataMode(DataModeEnum.PING);
+            PingForm form = new PingForm();
+            form.ShowDialog();
+            RS232.Instance.SetDataMode(oldDataMode);
+        }
+
+        private void uxPortListRefreshButton_Click(object sender, EventArgs e)
+        {
+            uxPortComboBox.DataSource = SerialPort.GetPortNames();
+        }
+
+        private void uxReceivedBinaryClearButton_Click(object sender, EventArgs e)
+        {
+            DynamicByteProvider data = (DynamicByteProvider)uxReceivedHexBox.ByteProvider;
+            data.DeleteBytes(0, data.Length);
+            uxReceivedHexBox.Invalidate();
+        }
+
+        private void uxReceivedTextClearButton_Click(object sender, EventArgs e)
+        {
+            uxReceivedTextTextBox.Clear();
+        }
+
+        private void uxSendBinaryButton_Click(object sender, EventArgs e)
+        {
+            DynamicByteProvider data = (DynamicByteProvider)uxTransmitHexBox.ByteProvider;
+            RS232.Instance.SendBinary(data.Bytes.ToArray());
+        }
+
+        private void uxSendFileButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = false;
+            if(dialog.ShowDialog() == DialogResult.OK) {
+                BinaryReader b = new BinaryReader(File.Open(dialog.FileName, FileMode.Open));
+                byte[] data = b.ReadBytes((int)(new FileInfo(dialog.FileName)).Length);
+                RS232.Instance.SendBinary(data);
             }
         }
 
@@ -149,11 +357,44 @@ namespace RS232
             }
         }
 
-        private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        private void uxTerminatorComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SerialPort sp = (SerialPort)sender;
-            string indata = sp.ReadExisting();
-            uxReceivedTextTextBox.AppendText(indata);
+            if (uxTerminatorComboBox.SelectedIndex == 3)
+                uxTerminatorTextBox.Enabled = true;
+            else
+                uxTerminatorTextBox.Enabled = false;
+        }
+
+        private void uxTransmitBinaryTextBox_TextChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("TextChanged occured!");
+        }
+
+        private void uxTransmitBinaryTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            Console.WriteLine("KeyDown");
+            Console.WriteLine("KeyData = {0}", e.KeyData);
+            Console.WriteLine("KeyValue = {0}", e.KeyValue);
+            Console.WriteLine("KeyCode = {0}", e.KeyCode);
+
+            // Dopuszczalne znaki
+            char[] allowedChars = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                                              'A', 'B', 'C', 'D', 'E', 'F',
+                                              '\r', '\n', '\b', ' '};
+
+            if (!allowedChars.Contains((char)e.KeyValue))
+                e.SuppressKeyPress = true;
+        }
+
+        private void uxTransactionTimeout_ValueChanged(object sender, EventArgs e)
+        {
+            RS232.Instance.TransactionTimeout = (int)(uxTransactionTimeout.Value * 1000);
+            Console.WriteLine("Zmieniono timeout na {0}ms", (int)(uxTransactionTimeout.Value * 1000));
+        }
+
+        private void uxTransactionCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            RS232.Instance.TransactionEnabled = uxTransactionCheckBox.Checked;
         }
     }
 }

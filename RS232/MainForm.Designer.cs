@@ -28,16 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.uxStatusStrip = new System.Windows.Forms.StatusStrip();
             this.uxStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.uxMenuStrip = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxTestFormMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.narzędziaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autobaudingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ręczneSterowanieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxPingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxAutoboudingMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uxManualControlMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uxMainSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.uxModeTabs = new System.Windows.Forms.TabControl();
+            this.uxTabs = new System.Windows.Forms.TabControl();
             this.uxTextModeTab = new System.Windows.Forms.TabPage();
             this.uxTextSplitContainer = new System.Windows.Forms.SplitContainer();
             this.uxSendTextButton = new System.Windows.Forms.Button();
@@ -45,6 +47,12 @@
             this.uxReceivedTextClearButton = new System.Windows.Forms.Button();
             this.uxReceivedTextTextBox = new System.Windows.Forms.TextBox();
             this.uxBinaryModeTab = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.uxSendFileButton = new System.Windows.Forms.Button();
+            this.uxTransmitHexBox = new Be.Windows.Forms.HexBox();
+            this.uxSendBinaryButton = new System.Windows.Forms.Button();
+            this.uxReceivedHexBox = new Be.Windows.Forms.HexBox();
+            this.uxReceivedBinaryClearButton = new System.Windows.Forms.Button();
             this.uxStopBitsComboBox = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.uxParityComboBox = new System.Windows.Forms.ComboBox();
@@ -64,18 +72,29 @@
             this.uxPortComboBox = new System.Windows.Forms.ComboBox();
             this.uxPortListRefreshButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.uxTransactionCheckBox = new System.Windows.Forms.CheckBox();
+            this.uxTransactionTimeout = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
             this.uxStatusStrip.SuspendLayout();
             this.uxMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).BeginInit();
             this.uxMainSplitContainer.Panel1.SuspendLayout();
             this.uxMainSplitContainer.Panel2.SuspendLayout();
             this.uxMainSplitContainer.SuspendLayout();
-            this.uxModeTabs.SuspendLayout();
+            this.uxTabs.SuspendLayout();
             this.uxTextModeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).BeginInit();
             this.uxTextSplitContainer.Panel1.SuspendLayout();
             this.uxTextSplitContainer.Panel2.SuspendLayout();
             this.uxTextSplitContainer.SuspendLayout();
+            this.uxBinaryModeTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uxTransactionTimeout)).BeginInit();
             this.SuspendLayout();
             // 
             // uxStatusStrip
@@ -107,37 +126,47 @@
             // 
             // plikToolStripMenuItem
             // 
+            this.plikToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.uxTestFormMenuItem});
             this.plikToolStripMenuItem.Name = "plikToolStripMenuItem";
             this.plikToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
             this.plikToolStripMenuItem.Text = "Plik";
             // 
+            // uxTestFormMenuItem
+            // 
+            this.uxTestFormMenuItem.Name = "uxTestFormMenuItem";
+            this.uxTestFormMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.uxTestFormMenuItem.Text = "TestForm";
+            // 
             // narzędziaToolStripMenuItem
             // 
             this.narzędziaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.pingToolStripMenuItem,
-            this.autobaudingToolStripMenuItem,
-            this.ręczneSterowanieToolStripMenuItem});
+            this.uxPingMenuItem,
+            this.uxAutoboudingMenuItem,
+            this.uxManualControlMenuItem});
             this.narzędziaToolStripMenuItem.Name = "narzędziaToolStripMenuItem";
             this.narzędziaToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.narzędziaToolStripMenuItem.Text = "Narzędzia";
             // 
-            // pingToolStripMenuItem
+            // uxPingMenuItem
             // 
-            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
-            this.pingToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.pingToolStripMenuItem.Text = "Ping";
+            this.uxPingMenuItem.Name = "uxPingMenuItem";
+            this.uxPingMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.uxPingMenuItem.Text = "Ping";
+            this.uxPingMenuItem.Click += new System.EventHandler(this.uxPingMenuItem_Click);
             // 
-            // autobaudingToolStripMenuItem
+            // uxAutoboudingMenuItem
             // 
-            this.autobaudingToolStripMenuItem.Name = "autobaudingToolStripMenuItem";
-            this.autobaudingToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.autobaudingToolStripMenuItem.Text = "Autobauding";
+            this.uxAutoboudingMenuItem.Name = "uxAutoboudingMenuItem";
+            this.uxAutoboudingMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.uxAutoboudingMenuItem.Text = "Autobauding";
             // 
-            // ręczneSterowanieToolStripMenuItem
+            // uxManualControlMenuItem
             // 
-            this.ręczneSterowanieToolStripMenuItem.Name = "ręczneSterowanieToolStripMenuItem";
-            this.ręczneSterowanieToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
-            this.ręczneSterowanieToolStripMenuItem.Text = "Ręczne sterowanie";
+            this.uxManualControlMenuItem.Name = "uxManualControlMenuItem";
+            this.uxManualControlMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.uxManualControlMenuItem.Text = "Ręczne sterowanie";
+            this.uxManualControlMenuItem.Click += new System.EventHandler(this.uxManualControlMenuItem_Click);
             // 
             // uxMainSplitContainer
             // 
@@ -147,10 +176,13 @@
             // 
             // uxMainSplitContainer.Panel1
             // 
-            this.uxMainSplitContainer.Panel1.Controls.Add(this.uxModeTabs);
+            this.uxMainSplitContainer.Panel1.Controls.Add(this.uxTabs);
             // 
             // uxMainSplitContainer.Panel2
             // 
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.label9);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxTransactionTimeout);
+            this.uxMainSplitContainer.Panel2.Controls.Add(this.uxTransactionCheckBox);
             this.uxMainSplitContainer.Panel2.Controls.Add(this.uxStopBitsComboBox);
             this.uxMainSplitContainer.Panel2.Controls.Add(this.label8);
             this.uxMainSplitContainer.Panel2.Controls.Add(this.uxParityComboBox);
@@ -174,16 +206,17 @@
             this.uxMainSplitContainer.SplitterDistance = 473;
             this.uxMainSplitContainer.TabIndex = 2;
             // 
-            // uxModeTabs
+            // uxTabs
             // 
-            this.uxModeTabs.Controls.Add(this.uxTextModeTab);
-            this.uxModeTabs.Controls.Add(this.uxBinaryModeTab);
-            this.uxModeTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uxModeTabs.Location = new System.Drawing.Point(0, 0);
-            this.uxModeTabs.Name = "uxModeTabs";
-            this.uxModeTabs.SelectedIndex = 0;
-            this.uxModeTabs.Size = new System.Drawing.Size(473, 419);
-            this.uxModeTabs.TabIndex = 0;
+            this.uxTabs.Controls.Add(this.uxTextModeTab);
+            this.uxTabs.Controls.Add(this.uxBinaryModeTab);
+            this.uxTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uxTabs.Location = new System.Drawing.Point(0, 0);
+            this.uxTabs.Name = "uxTabs";
+            this.uxTabs.SelectedIndex = 0;
+            this.uxTabs.Size = new System.Drawing.Size(473, 419);
+            this.uxTabs.TabIndex = 0;
+            this.uxTabs.SelectedIndexChanged += new System.EventHandler(this.uxModeTabs_SelectedIndexChanged);
             // 
             // uxTextModeTab
             // 
@@ -248,6 +281,7 @@
             this.uxReceivedTextClearButton.TabIndex = 3;
             this.uxReceivedTextClearButton.Text = "Wyczyść";
             this.uxReceivedTextClearButton.UseVisualStyleBackColor = true;
+            this.uxReceivedTextClearButton.Click += new System.EventHandler(this.uxReceivedTextClearButton_Click);
             // 
             // uxReceivedTextTextBox
             // 
@@ -260,13 +294,91 @@
             // 
             // uxBinaryModeTab
             // 
+            this.uxBinaryModeTab.Controls.Add(this.splitContainer1);
             this.uxBinaryModeTab.Location = new System.Drawing.Point(4, 22);
             this.uxBinaryModeTab.Name = "uxBinaryModeTab";
             this.uxBinaryModeTab.Padding = new System.Windows.Forms.Padding(3);
             this.uxBinaryModeTab.Size = new System.Drawing.Size(465, 393);
-            this.uxBinaryModeTab.TabIndex = 1;
+            this.uxBinaryModeTab.TabIndex = 2;
             this.uxBinaryModeTab.Text = "Tryb binarny";
             this.uxBinaryModeTab.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.uxSendFileButton);
+            this.splitContainer1.Panel1.Controls.Add(this.uxTransmitHexBox);
+            this.splitContainer1.Panel1.Controls.Add(this.uxSendBinaryButton);
+            this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.uxReceivedHexBox);
+            this.splitContainer1.Panel2.Controls.Add(this.uxReceivedBinaryClearButton);
+            this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer1.Size = new System.Drawing.Size(459, 387);
+            this.splitContainer1.SplitterDistance = 190;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // uxSendFileButton
+            // 
+            this.uxSendFileButton.Location = new System.Drawing.Point(300, 164);
+            this.uxSendFileButton.Name = "uxSendFileButton";
+            this.uxSendFileButton.Size = new System.Drawing.Size(75, 23);
+            this.uxSendFileButton.TabIndex = 4;
+            this.uxSendFileButton.Text = "Wyślij plik";
+            this.uxSendFileButton.UseVisualStyleBackColor = true;
+            this.uxSendFileButton.Click += new System.EventHandler(this.uxSendFileButton_Click);
+            // 
+            // uxTransmitHexBox
+            // 
+            this.uxTransmitHexBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uxTransmitHexBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.uxTransmitHexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.uxTransmitHexBox.Location = new System.Drawing.Point(0, 0);
+            this.uxTransmitHexBox.Name = "uxTransmitHexBox";
+            this.uxTransmitHexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.uxTransmitHexBox.Size = new System.Drawing.Size(459, 158);
+            this.uxTransmitHexBox.TabIndex = 3;
+            // 
+            // uxSendBinaryButton
+            // 
+            this.uxSendBinaryButton.Location = new System.Drawing.Point(381, 164);
+            this.uxSendBinaryButton.Name = "uxSendBinaryButton";
+            this.uxSendBinaryButton.Size = new System.Drawing.Size(75, 23);
+            this.uxSendBinaryButton.TabIndex = 2;
+            this.uxSendBinaryButton.Text = "Wyślij";
+            this.uxSendBinaryButton.UseVisualStyleBackColor = true;
+            this.uxSendBinaryButton.Click += new System.EventHandler(this.uxSendBinaryButton_Click);
+            // 
+            // uxReceivedHexBox
+            // 
+            this.uxReceivedHexBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.uxReceivedHexBox.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.uxReceivedHexBox.InfoForeColor = System.Drawing.Color.Empty;
+            this.uxReceivedHexBox.Location = new System.Drawing.Point(0, 0);
+            this.uxReceivedHexBox.Name = "uxReceivedHexBox";
+            this.uxReceivedHexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+            this.uxReceivedHexBox.Size = new System.Drawing.Size(459, 161);
+            this.uxReceivedHexBox.TabIndex = 4;
+            // 
+            // uxReceivedBinaryClearButton
+            // 
+            this.uxReceivedBinaryClearButton.Location = new System.Drawing.Point(381, 167);
+            this.uxReceivedBinaryClearButton.Name = "uxReceivedBinaryClearButton";
+            this.uxReceivedBinaryClearButton.Size = new System.Drawing.Size(75, 23);
+            this.uxReceivedBinaryClearButton.TabIndex = 3;
+            this.uxReceivedBinaryClearButton.Text = "Wyczyść";
+            this.uxReceivedBinaryClearButton.UseVisualStyleBackColor = true;
+            this.uxReceivedBinaryClearButton.Click += new System.EventHandler(this.uxReceivedBinaryClearButton_Click);
             // 
             // uxStopBitsComboBox
             // 
@@ -353,6 +465,7 @@
             this.uxTerminatorComboBox.Name = "uxTerminatorComboBox";
             this.uxTerminatorComboBox.Size = new System.Drawing.Size(121, 21);
             this.uxTerminatorComboBox.TabIndex = 12;
+            this.uxTerminatorComboBox.SelectedIndexChanged += new System.EventHandler(this.uxTerminatorComboBox_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -481,6 +594,69 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Konfiguracja portu";
             // 
+            // printPreviewDialog1
+            // 
+            this.printPreviewDialog1.AutoScrollMargin = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
+            this.printPreviewDialog1.ClientSize = new System.Drawing.Size(400, 300);
+            this.printPreviewDialog1.Enabled = true;
+            this.printPreviewDialog1.Icon = ((System.Drawing.Icon)(resources.GetObject("printPreviewDialog1.Icon")));
+            this.printPreviewDialog1.Name = "printPreviewDialog1";
+            this.printPreviewDialog1.Visible = false;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // uxTransactionCheckBox
+            // 
+            this.uxTransactionCheckBox.AutoSize = true;
+            this.uxTransactionCheckBox.Location = new System.Drawing.Point(19, 258);
+            this.uxTransactionCheckBox.Name = "uxTransactionCheckBox";
+            this.uxTransactionCheckBox.Size = new System.Drawing.Size(95, 17);
+            this.uxTransactionCheckBox.TabIndex = 20;
+            this.uxTransactionCheckBox.Text = "Tryb transakcji";
+            this.uxTransactionCheckBox.UseVisualStyleBackColor = true;
+            this.uxTransactionCheckBox.CheckedChanged += new System.EventHandler(this.uxTransactionCheckBox_CheckedChanged);
+            // 
+            // uxTransactionTimeout
+            // 
+            this.uxTransactionTimeout.DecimalPlaces = 1;
+            this.uxTransactionTimeout.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.Location = new System.Drawing.Point(120, 257);
+            this.uxTransactionTimeout.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.uxTransactionTimeout.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.Name = "uxTransactionTimeout";
+            this.uxTransactionTimeout.Size = new System.Drawing.Size(55, 20);
+            this.uxTransactionTimeout.TabIndex = 21;
+            this.uxTransactionTimeout.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.ValueChanged += new System.EventHandler(this.uxTransactionTimeout_ValueChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(181, 259);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "sekund(y)";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,7 +677,7 @@
             this.uxMainSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).EndInit();
             this.uxMainSplitContainer.ResumeLayout(false);
-            this.uxModeTabs.ResumeLayout(false);
+            this.uxTabs.ResumeLayout(false);
             this.uxTextModeTab.ResumeLayout(false);
             this.uxTextSplitContainer.Panel1.ResumeLayout(false);
             this.uxTextSplitContainer.Panel1.PerformLayout();
@@ -509,6 +685,12 @@
             this.uxTextSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).EndInit();
             this.uxTextSplitContainer.ResumeLayout(false);
+            this.uxBinaryModeTab.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.uxTransactionTimeout)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -521,12 +703,11 @@
         private System.Windows.Forms.ToolStripStatusLabel uxStripStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem plikToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem narzędziaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem autobaudingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uxPingMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uxAutoboudingMenuItem;
         private System.Windows.Forms.SplitContainer uxMainSplitContainer;
-        private System.Windows.Forms.TabControl uxModeTabs;
+        private System.Windows.Forms.TabControl uxTabs;
         private System.Windows.Forms.TabPage uxTextModeTab;
-        private System.Windows.Forms.TabPage uxBinaryModeTab;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox uxPortComboBox;
         private System.Windows.Forms.Button uxPortListRefreshButton;
@@ -537,7 +718,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox uxDataControlFlowComboBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ToolStripMenuItem ręczneSterowanieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uxManualControlMenuItem;
         private System.Windows.Forms.ComboBox uxTerminatorComboBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox uxTerminatorTextBox;
@@ -552,6 +733,19 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox uxStopBitsComboBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage uxBinaryModeTab;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button uxSendBinaryButton;
+        private System.Windows.Forms.Button uxReceivedBinaryClearButton;
+        private System.Windows.Forms.ToolStripMenuItem uxTestFormMenuItem;
+        private System.Windows.Forms.PrintPreviewDialog printPreviewDialog1;
+        private Be.Windows.Forms.HexBox uxTransmitHexBox;
+        private Be.Windows.Forms.HexBox uxReceivedHexBox;
+        private System.Windows.Forms.Button uxSendFileButton;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown uxTransactionTimeout;
+        private System.Windows.Forms.CheckBox uxTransactionCheckBox;
     }
 }
 
