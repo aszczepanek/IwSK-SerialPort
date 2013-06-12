@@ -13,7 +13,8 @@ namespace RS232
         ErrorOccured,
         FrameSent,
         FrameReceived,
-        TextReceived
+        TextReceived,
+        TextRequest
     }
 
     /// <summary>

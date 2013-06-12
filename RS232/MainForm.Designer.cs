@@ -53,6 +53,9 @@
             this.uxSendBinaryButton = new System.Windows.Forms.Button();
             this.uxReceivedHexBox = new Be.Windows.Forms.HexBox();
             this.uxReceivedBinaryClearButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.uxTransactionTimeout = new System.Windows.Forms.NumericUpDown();
+            this.uxTransactionCheckBox = new System.Windows.Forms.CheckBox();
             this.uxStopBitsComboBox = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.uxParityComboBox = new System.Windows.Forms.ComboBox();
@@ -74,9 +77,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.printPreviewDialog1 = new System.Windows.Forms.PrintPreviewDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.uxTransactionCheckBox = new System.Windows.Forms.CheckBox();
-            this.uxTransactionTimeout = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
             this.uxStatusStrip.SuspendLayout();
             this.uxMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).BeginInit();
@@ -160,6 +160,7 @@
             this.uxAutoboudingMenuItem.Name = "uxAutoboudingMenuItem";
             this.uxAutoboudingMenuItem.Size = new System.Drawing.Size(171, 22);
             this.uxAutoboudingMenuItem.Text = "Autobauding";
+            this.uxAutoboudingMenuItem.Click += new System.EventHandler(this.uxAutoboudingMenuItem_Click);
             // 
             // uxManualControlMenuItem
             // 
@@ -379,6 +380,55 @@
             this.uxReceivedBinaryClearButton.Text = "Wyczyść";
             this.uxReceivedBinaryClearButton.UseVisualStyleBackColor = true;
             this.uxReceivedBinaryClearButton.Click += new System.EventHandler(this.uxReceivedBinaryClearButton_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(181, 259);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(53, 13);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "sekund(y)";
+            // 
+            // uxTransactionTimeout
+            // 
+            this.uxTransactionTimeout.DecimalPlaces = 1;
+            this.uxTransactionTimeout.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.Location = new System.Drawing.Point(120, 257);
+            this.uxTransactionTimeout.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.uxTransactionTimeout.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.Name = "uxTransactionTimeout";
+            this.uxTransactionTimeout.Size = new System.Drawing.Size(55, 20);
+            this.uxTransactionTimeout.TabIndex = 21;
+            this.uxTransactionTimeout.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.uxTransactionTimeout.ValueChanged += new System.EventHandler(this.uxTransactionTimeout_ValueChanged);
+            // 
+            // uxTransactionCheckBox
+            // 
+            this.uxTransactionCheckBox.AutoSize = true;
+            this.uxTransactionCheckBox.Location = new System.Drawing.Point(19, 258);
+            this.uxTransactionCheckBox.Name = "uxTransactionCheckBox";
+            this.uxTransactionCheckBox.Size = new System.Drawing.Size(95, 17);
+            this.uxTransactionCheckBox.TabIndex = 20;
+            this.uxTransactionCheckBox.Text = "Tryb transakcji";
+            this.uxTransactionCheckBox.UseVisualStyleBackColor = true;
+            this.uxTransactionCheckBox.CheckedChanged += new System.EventHandler(this.uxTransactionCheckBox_CheckedChanged);
             // 
             // uxStopBitsComboBox
             // 
@@ -607,55 +657,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // uxTransactionCheckBox
-            // 
-            this.uxTransactionCheckBox.AutoSize = true;
-            this.uxTransactionCheckBox.Location = new System.Drawing.Point(19, 258);
-            this.uxTransactionCheckBox.Name = "uxTransactionCheckBox";
-            this.uxTransactionCheckBox.Size = new System.Drawing.Size(95, 17);
-            this.uxTransactionCheckBox.TabIndex = 20;
-            this.uxTransactionCheckBox.Text = "Tryb transakcji";
-            this.uxTransactionCheckBox.UseVisualStyleBackColor = true;
-            this.uxTransactionCheckBox.CheckedChanged += new System.EventHandler(this.uxTransactionCheckBox_CheckedChanged);
-            // 
-            // uxTransactionTimeout
-            // 
-            this.uxTransactionTimeout.DecimalPlaces = 1;
-            this.uxTransactionTimeout.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.uxTransactionTimeout.Location = new System.Drawing.Point(120, 257);
-            this.uxTransactionTimeout.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.uxTransactionTimeout.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.uxTransactionTimeout.Name = "uxTransactionTimeout";
-            this.uxTransactionTimeout.Size = new System.Drawing.Size(55, 20);
-            this.uxTransactionTimeout.TabIndex = 21;
-            this.uxTransactionTimeout.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.uxTransactionTimeout.ValueChanged += new System.EventHandler(this.uxTransactionTimeout_ValueChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(181, 259);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(53, 13);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "sekund(y)";
             // 
             // MainForm
             // 

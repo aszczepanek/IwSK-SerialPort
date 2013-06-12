@@ -56,6 +56,7 @@ namespace RS232
 
             uxPingMenuItem.Enabled = false;
             uxManualControlMenuItem.Enabled = false;
+            uxAutoboudingMenuItem.Enabled = true;
         }
 
         /// <summary>
@@ -81,6 +82,7 @@ namespace RS232
 
             uxPingMenuItem.Enabled = true;
             uxManualControlMenuItem.Enabled = true;
+            uxAutoboudingMenuItem.Enabled = false;
         }
 
         /// <summary>
@@ -177,7 +179,7 @@ namespace RS232
         {
             if (uxTerminatorComboBox.SelectedIndex == 3 && !ValidateTerminator())
             {
-                MessageBox.Show("Trolololo, wpisz dobry terminatorek.");
+                MessageBox.Show("Wpisz dobry terminator.");
                 return;
             }
 
@@ -395,6 +397,15 @@ namespace RS232
         private void uxTransactionCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             RS232.Instance.TransactionEnabled = uxTransactionCheckBox.Checked;
+        }
+
+        private void uxAutoboudingMenuItem_Click(object sender, EventArgs e)
+        {
+            DataModeEnum oldDataMode = RS232.Instance.DataMode;
+            RS232.Instance.SetDataMode(DataModeEnum.PING);
+            AutobaudingForm form = new AutobaudingForm();
+            form.ShowDialog();
+            RS232.Instance.SetDataMode(oldDataMode);
         }
     }
 }

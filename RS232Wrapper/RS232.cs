@@ -163,6 +163,8 @@ namespace RS232
             _pingStopwatch.Stop();
             _pingStopwatch.Reset();
 
+            
+
             RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.PingTimeout);
             Communicate(arg);
         }
@@ -249,8 +251,7 @@ namespace RS232
         /// </summary>
         private void SendPing()
         {
-            byte[] buffer = { 0xAA };
-            Port.Write(buffer, 0, 1);
+            Port.WriteLine("A");
         }
 
         /// <summary>
@@ -295,11 +296,11 @@ namespace RS232
             byte[] buf = new byte[sp.BytesToRead];
             sp.Read(buf, 0, buf.Length);
 
-            Console.WriteLine("Received binary data:");
-            for (int i = 0; i < buf.Length; i++)
-            {
-                Console.Write(buf[i] + " ");
-            }
+//             Console.WriteLine("Received binary data:");
+//             for (int i = 0; i < buf.Length; i++)
+//             {
+//                 Console.Write(buf[i] + " ");
+//             }
 
             RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.BinaryDataReceived);
             arg.BinaryData = buf;
@@ -350,7 +351,7 @@ namespace RS232
             else
             {
                 // Odesłanie odpowiedzi na ping.
-                System.Threading.Thread.Sleep(150);
+                Port.ReadLine();
                 SendPing();
             }
 

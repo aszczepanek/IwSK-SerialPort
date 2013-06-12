@@ -150,7 +150,7 @@
             this.Controls.Add(this.uxDSRLabel);
             this.Controls.Add(this.uxRTSLabel);
             this.Name = "ManualControlForm";
-            this.Text = "ManualMode";
+            this.Text = "Tryb ręczny";
             this.ResumeLayout(false);
             this.PerformLayout();
 

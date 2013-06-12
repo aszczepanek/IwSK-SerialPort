@@ -61,6 +61,8 @@
             this.uxReceivedHexBox = new Be.Windows.Forms.HexBox();
             this.label16 = new System.Windows.Forms.Label();
             this.uxPortNameComboBox = new System.Windows.Forms.ComboBox();
+            this.uxConnectButton = new System.Windows.Forms.Button();
+            this.uxDisconnectButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.uxStationAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uxDestinationAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uxInstructionCode)).BeginInit();
@@ -348,7 +350,7 @@
             // 
             // uxMessageTextBox
             // 
-            this.uxMessageTextBox.Location = new System.Drawing.Point(14, 300);
+            this.uxMessageTextBox.Location = new System.Drawing.Point(12, 329);
             this.uxMessageTextBox.Multiline = true;
             this.uxMessageTextBox.Name = "uxMessageTextBox";
             this.uxMessageTextBox.Size = new System.Drawing.Size(175, 49);
@@ -356,7 +358,7 @@
             // 
             // uxSendButton
             // 
-            this.uxSendButton.Location = new System.Drawing.Point(115, 271);
+            this.uxSendButton.Location = new System.Drawing.Point(113, 300);
             this.uxSendButton.Name = "uxSendButton";
             this.uxSendButton.Size = new System.Drawing.Size(75, 23);
             this.uxSendButton.TabIndex = 21;
@@ -367,7 +369,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(13, 276);
+            this.label12.Location = new System.Drawing.Point(11, 305);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(66, 13);
             this.label12.TabIndex = 22;
@@ -375,7 +377,7 @@
             // 
             // uxReceivedTextBox
             // 
-            this.uxReceivedTextBox.Location = new System.Drawing.Point(199, 300);
+            this.uxReceivedTextBox.Location = new System.Drawing.Point(197, 329);
             this.uxReceivedTextBox.Multiline = true;
             this.uxReceivedTextBox.Name = "uxReceivedTextBox";
             this.uxReceivedTextBox.Size = new System.Drawing.Size(175, 49);
@@ -384,7 +386,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(196, 276);
+            this.label13.Location = new System.Drawing.Point(194, 305);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(84, 13);
             this.label13.TabIndex = 24;
@@ -397,7 +399,7 @@
             this.uxSentHexBox.Location = new System.Drawing.Point(239, 26);
             this.uxSentHexBox.Name = "uxSentHexBox";
             this.uxSentHexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.uxSentHexBox.Size = new System.Drawing.Size(291, 87);
+            this.uxSentHexBox.Size = new System.Drawing.Size(296, 87);
             this.uxSentHexBox.TabIndex = 25;
             // 
             // label14
@@ -416,7 +418,7 @@
             this.shapeContainer1.Name = "shapeContainer1";
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(542, 377);
+            this.shapeContainer1.Size = new System.Drawing.Size(547, 395);
             this.shapeContainer1.TabIndex = 27;
             this.shapeContainer1.TabStop = false;
             // 
@@ -444,7 +446,7 @@
             this.uxReceivedHexBox.Location = new System.Drawing.Point(239, 135);
             this.uxReceivedHexBox.Name = "uxReceivedHexBox";
             this.uxReceivedHexBox.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.uxReceivedHexBox.Size = new System.Drawing.Size(291, 87);
+            this.uxReceivedHexBox.Size = new System.Drawing.Size(296, 87);
             this.uxReceivedHexBox.TabIndex = 28;
             // 
             // label16
@@ -466,11 +468,33 @@
             this.uxPortNameComboBox.TabIndex = 30;
             this.uxPortNameComboBox.SelectedIndexChanged += new System.EventHandler(this.uxPortNameComboBox_SelectedIndexChanged);
             // 
+            // uxConnectButton
+            // 
+            this.uxConnectButton.Location = new System.Drawing.Point(13, 271);
+            this.uxConnectButton.Name = "uxConnectButton";
+            this.uxConnectButton.Size = new System.Drawing.Size(75, 23);
+            this.uxConnectButton.TabIndex = 32;
+            this.uxConnectButton.Text = "Podłącz";
+            this.uxConnectButton.UseVisualStyleBackColor = true;
+            this.uxConnectButton.Click += new System.EventHandler(this.uxConnectButton_Click);
+            // 
+            // uxDisconnectButton
+            // 
+            this.uxDisconnectButton.Location = new System.Drawing.Point(94, 271);
+            this.uxDisconnectButton.Name = "uxDisconnectButton";
+            this.uxDisconnectButton.Size = new System.Drawing.Size(75, 23);
+            this.uxDisconnectButton.TabIndex = 33;
+            this.uxDisconnectButton.Text = "Rozłącz";
+            this.uxDisconnectButton.UseVisualStyleBackColor = true;
+            this.uxDisconnectButton.Click += new System.EventHandler(this.uxDisconnectButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(542, 377);
+            this.ClientSize = new System.Drawing.Size(547, 395);
+            this.Controls.Add(this.uxDisconnectButton);
+            this.Controls.Add(this.uxConnectButton);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.uxPortNameComboBox);
             this.Controls.Add(this.label15);
@@ -551,6 +575,8 @@
         private Be.Windows.Forms.HexBox uxReceivedHexBox;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.ComboBox uxPortNameComboBox;
+        private System.Windows.Forms.Button uxConnectButton;
+        private System.Windows.Forms.Button uxDisconnectButton;
     }
 }
 
