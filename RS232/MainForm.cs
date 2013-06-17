@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO.Ports;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Be.Windows.Forms;
@@ -384,8 +383,17 @@ namespace RS232
                                               'A', 'B', 'C', 'D', 'E', 'F',
                                               '\r', '\n', '\b', ' '};
 
-            if (!allowedChars.Contains((char)e.KeyValue))
-                e.SuppressKeyPress = true;
+            for (int i = 0; i < allowedChars.Length; i++)
+            {
+                if (allowedChars[i] == (char)e.KeyValue)
+                {
+                    e.SuppressKeyPress = true;
+                    break;
+                }
+            }
+
+//             if (!allowedChars.Contains((char)e.KeyValue))
+//                 e.SuppressKeyPress = true;
         }
 
         private void uxTransactionTimeout_ValueChanged(object sender, EventArgs e)

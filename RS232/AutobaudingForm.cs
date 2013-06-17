@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO.Ports;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Timers;
+using System.Threading;
 
 namespace RS232
 {
@@ -14,18 +15,17 @@ namespace RS232
     {
         private List<RS232Config> _configList = new List<RS232Config>();
 
-        private bool _stopTesting = false;
-
         private string _portName;
+
+        private bool _terminateThread = false;
+
+        private Thread _testingThread;
 
         public AutobaudingForm()
         {
             InitializeComponent();
-            RS232.Instance.Communicate += OnRS232Communicate;
 
             uxPortComboBox.DataSource = SerialPort.GetPortNames();
-
-            
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace RS232
                                                             28800, 38400, 56000, 57600, 115200 });
             List<int> dataBits = new List<int>(new int[] { 7, 8});
             List<Parity> parities = new List<Parity>(new Parity[] {Parity.None, Parity.Even, Parity.Odd });
-            List<StopBits> stopBits = new List<StopBits>(new StopBits[] { StopBits.None, StopBits.One, StopBits.Two });
+            List<StopBits> stopBits = new List<StopBits>(new StopBits[] { StopBits.One, StopBits.Two });
             List<Handshake> handshakes = new List<Handshake>(new Handshake[] { Handshake.None, Handshake.RequestToSend, Handshake.XOnXOff });
             List<string> terminators = new List<string>(new string[] { "\r", "\n", "\r\n" });
 
@@ -54,61 +54,24 @@ namespace RS232
                                     _configList.Add(new RS232Config(b, d, p, s, h, t));
         }
 
-        private void OnRS232Communicate(RS232CommunicateEventArgs arg)
-        {
-            if (InvokeRequired)
-            {
-                // Aktualizacja kontrolki z innego wątku.
-                RS232.RS232CommunicateDelegate d = new RS232.RS232CommunicateDelegate(OnRS232Communicate);
-                Invoke(d, new object[] { arg });
-                return;
-            }
-
-            switch (arg.Type)
-            {
-                case CommunicateType.PingTimeCaluclated:
-                    MessageBox.Show("Znaleziono działającą konfigurację! Zobacz ostatnio sprawdzaną konfigurację.", "RS232");
-                    break;
-
-                case CommunicateType.PingTimeout:
-                    if (_stopTesting == true) {
-                        _stopTesting = false;
-                        return;
-                    }
-                    TestNextConfig();
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
         private void uxBeginButton_Click(object sender, EventArgs e)
         {
+            uxBeginButton.Enabled = false;
             _portName = uxPortComboBox.Text;
             CreateConfigList();
             Console.WriteLine("Liczba konfiguracji: {0}", _configList.Count);
             RS232.Instance.Close();
             uxPortComboBox.Enabled = false;
-            TestNextConfig();
+            _terminateThread = false;
+            _testingThread = new Thread(TestConfigs);
+            _testingThread.Start();
         }
 
-        private void TestNextConfig()
+        private void SetLabels(RS232Config c)
         {
-            if (_configList.Count == 0)
+            if (InvokeRequired)
             {
-                MessageBox.Show("Nie znaleziono odpowiedniej konfiguracji.", "RS232");
-                return;
-            }
-
-            RS232Config c = _configList[0];
-            _configList.Remove(c);
-
-            RS232.Instance.Close();
-
-            if (RS232.Instance.Open(_portName, c.Baudrate, c.DataBits, c.StopBits, c.Parity, c.Terminator, c.Handshake) != 0)
-            {
-                TestNextConfig();
+                BeginInvoke(new MethodInvoker(() => SetLabels(c)));
             }
             else
             {
@@ -123,7 +86,50 @@ namespace RS232
                     uxTerminatorLabel.Text = "LF";
                 else
                     uxTerminatorLabel.Text = "CRLF";
-                RS232.Instance.Ping();
+            }
+        }
+
+        private void TestConfigs()
+        {
+            bool condition = true;
+
+            while (condition)
+            {
+                if (_terminateThread)
+                {
+                    Console.WriteLine("Zakończono wątek testowania");
+                    RS232.Instance.Close();
+                    return;
+                }
+
+                if (_configList.Count == 0)
+                {
+                    MessageBox.Show("Nie znaleziono odpowiedniej konfiguracji.", "RS232");
+                    return;
+                }
+
+                RS232Config c = _configList[0];
+                _configList.Remove(c);
+
+                RS232.Instance.Close();
+
+                if (RS232.Instance.Open(_portName, c.Baudrate, c.DataBits, c.StopBits, c.Parity, c.Terminator, c.Handshake) != 0)
+                {
+                    Console.WriteLine("Kontynuacja");
+                    continue;
+                }
+                else
+                {
+                    RS232.Instance.Port.DiscardInBuffer();
+                    RS232.Instance.Port.DiscardOutBuffer();
+                    SetLabels(c);
+                    
+                    if (RS232.Instance.Ping() >= 0)
+                    {
+                        MessageBox.Show("Znaleziono działającą konfigurację! Zobacz ostatnio sprawdzaną konfigurację.", "RS232");
+                        condition = false;
+                    }
+                }
             }
 
         }
@@ -131,7 +137,15 @@ namespace RS232
         private void uxStopButton_Click(object sender, EventArgs e)
         {
             uxPortComboBox.Enabled = true;
-            _stopTesting = true;
+            _terminateThread = true;
+            _testingThread.Join();
+            uxBeginButton.Enabled = true;
+        }
+
+        private void AutobaudingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _terminateThread = true;
+            _testingThread.Join();
         }
     }
 }

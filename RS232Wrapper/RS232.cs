@@ -35,27 +35,17 @@ namespace RS232
         private static RS232 _instance;
 
         /// <summary>
-        /// Pomiar czasu pingu.
-        /// </summary>
-        private Stopwatch _pingStopwatch;
-
-        /// <summary>
-        /// Obsługa timeoutu pingu.
-        /// </summary>
-        private Timer _pingTimeoutTimer;
-
-        /// <summary>
         /// Odpowiada za sposób interpretacji przychodzącego pingu -
         /// czy jest odpowiedź na nasz wysłany ping (true) czy
         /// jest to ping z "drugiej" strony łącza i należy odesłać
         /// odpowiedź na ping (false).
         /// </summary>
-        private bool _pingIsRunnig;
+        private bool _pingIsRunnig = false;
 
         /// <summary>
         /// Obsługa timeoutu transakcji.
         /// </summary>
-        private Timer _transactionTimeoutTimer;
+        private Timer _transactionTimeoutTimer = new Timer(1000);
 
         public DataModeEnum DataMode
         {
@@ -106,18 +96,13 @@ namespace RS232
 
         private RS232()
         {
-            // Ustawienie zmiennych związanych z pingiem.
-            _pingStopwatch = new Stopwatch();
-            _pingTimeoutTimer = new Timer(1000);
-            _pingTimeoutTimer.Elapsed += OnPingTimeout;
-            _pingIsRunnig = false;
-
             // Domyślne wyłączenie transakcji.
             TransactionEnabled = false;
-            _transactionTimeoutTimer = new Timer(1000);
             _transactionTimeoutTimer.Elapsed += OnTransactionTimeout;
 
             Port = new SerialPort();
+            Port.ReadTimeout = 1000;
+            Port.WriteTimeout = 1000;
             _dataMode = DataModeEnum.TEXT;
             Port.DataReceived += DataReceivedHandler;
         }
@@ -149,24 +134,6 @@ namespace RS232
                     PingHandler(sender, e);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Obsługa zdarzenia przekroczenia czasu oczekiwania na odpowiedź
-        /// na wysłany ping.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnPingTimeout(object sender, ElapsedEventArgs e)
-        {
-            _pingTimeoutTimer.Stop();
-            _pingStopwatch.Stop();
-            _pingStopwatch.Reset();
-
-            
-
-            RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.PingTimeout);
-            Communicate(arg);
         }
 
         /// <summary>
@@ -209,7 +176,7 @@ namespace RS232
                 Port.Handshake = handshake;
                 Port.Open();
             }
-            catch (Exception e)
+            catch
             {
                 return -1;
             }
@@ -220,51 +187,81 @@ namespace RS232
         /// <summary>
         /// Rozpoczyna transakcję typu ping.
         /// </summary>
-        public void Ping()
+        /// <returns>Wartość pingu w ms. -1 jeśli timeout.</returns>
+        public int Ping()
         {
             // To my wysyłamy ping.
             _pingIsRunnig = true;
-            SendPing();
+            Port.WriteTimeout = 1000;
+            Port.ReadTimeout = 1000;
+            Port.DiscardInBuffer();
+            Port.DiscardOutBuffer();
+            Stopwatch pingSW = new Stopwatch();
 
-            // Ropoczęcie pomiaru czasu oraz timera timeoutu.
-            _pingStopwatch.Start();
-            _pingTimeoutTimer.Start();
+            try
+            {
+                Port.WriteLine("A");
+                pingSW.Start();
+                Port.ReadLine();
+                pingSW.Stop();
+                _pingIsRunnig = false;
+                return (int)pingSW.ElapsedMilliseconds;
+            }
+            catch
+            {
+                _pingIsRunnig = false;
+                return -1;
+            }
         }
-
-        
 
         /// <summary>
         /// Wysyła dane binarne jeśli port jest otwarty.
         /// </summary>
         /// <param name="data">Dane do przesłania.</param>
-        public void SendBinary(byte[] data)
+        /// <returns>True jeśli udało się zapisać do portu.</returns>
+        public bool SendBinary(byte[] data)
         {
             if (Port.IsOpen)
-                Port.Write(data, 0, data.Length);
+            {
+                try
+                {
+                    Port.Write(data, 0, data.Length);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
 
             if (TransactionEnabled)
                 _transactionTimeoutTimer.Start();
-        }
 
-        /// <summary>
-        /// Wysłanie znaku-pingu (0xAA).
-        /// </summary>
-        private void SendPing()
-        {
-            Port.WriteLine("A");
+            return true;
         }
 
         /// <summary>
         /// Wysyła tekst jeśli port jest otwarty.
         /// </summary>
         /// <param name="text">Tekst do przesłania.</param>
-        public void SendText(string text)
+        /// <returns>True jeśli udało się zapisać do portu.</returns>
+        public bool SendText(string text)
         {
             if (Port.IsOpen)
-                Port.WriteLine(text);
+            {
+                try
+                {
+                    Port.WriteLine(text);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
 
             if (TransactionEnabled)
                 _transactionTimeoutTimer.Start();
+
+            return true;
         }
 
         /// <summary>
@@ -296,12 +293,6 @@ namespace RS232
             byte[] buf = new byte[sp.BytesToRead];
             sp.Read(buf, 0, buf.Length);
 
-//             Console.WriteLine("Received binary data:");
-//             for (int i = 0; i < buf.Length; i++)
-//             {
-//                 Console.Write(buf[i] + " ");
-//             }
-
             RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.BinaryDataReceived);
             arg.BinaryData = buf;
             Communicate(arg);
@@ -316,15 +307,17 @@ namespace RS232
         {
             // Jeśli nie napotkano znaku końca linii to nie odczytujemy
             // bufora wejściowego.
-//             if (e.EventType != SerialData.Eof)
-//                 return;
 
             SerialPort sp = sender as SerialPort;
-            string indata = sp.ReadLine();
+            try
+            {
+                string indata = sp.ReadLine();
 
-            RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.TextDataReceived);
-            arg.TextData = indata;
-            Communicate(arg);
+                RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.TextDataReceived);
+                arg.TextData = indata;
+                Communicate(arg);
+            }
+            catch { }
         }
 
         /// <summary>
@@ -334,29 +327,17 @@ namespace RS232
         /// <param name="e"></param>
         private void PingHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            if (_pingIsRunnig)
+            if (!_pingIsRunnig)
             {
-                // Odbiór pingu i pomiar czasu.
-                _pingStopwatch.Stop();
-                _pingTimeoutTimer.Stop();
-                long time = _pingStopwatch.ElapsedMilliseconds;
-                _pingStopwatch.Reset();
-
-                RS232CommunicateEventArgs arg = new RS232CommunicateEventArgs(CommunicateType.PingTimeCaluclated);
-                arg.PingTime = time;
-                Communicate(arg);
-
-                _pingIsRunnig = false;
+                // Odesłanie odpowiedzi na ping
+                try
+                {
+                    string input = Port.ReadLine();
+                    if (input == "A")
+                        Port.WriteLine("A");
+                }
+                catch { }
             }
-            else
-            {
-                // Odesłanie odpowiedzi na ping.
-                Port.ReadLine();
-                SendPing();
-            }
-
-            // Wyczyszczenie bufora wejściowego.
-            Port.DiscardInBuffer();
         }
     }
 }

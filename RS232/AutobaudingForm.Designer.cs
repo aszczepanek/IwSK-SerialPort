@@ -226,6 +226,7 @@
             this.Controls.Add(this.uxPortComboBox);
             this.Name = "AutobaudingForm";
             this.Text = "Autobauding";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AutobaudingForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

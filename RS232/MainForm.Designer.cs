@@ -79,18 +79,15 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.uxStatusStrip.SuspendLayout();
             this.uxMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).BeginInit();
             this.uxMainSplitContainer.Panel1.SuspendLayout();
             this.uxMainSplitContainer.Panel2.SuspendLayout();
             this.uxMainSplitContainer.SuspendLayout();
             this.uxTabs.SuspendLayout();
             this.uxTextModeTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).BeginInit();
             this.uxTextSplitContainer.Panel1.SuspendLayout();
             this.uxTextSplitContainer.Panel2.SuspendLayout();
             this.uxTextSplitContainer.SuspendLayout();
             this.uxBinaryModeTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -410,6 +407,7 @@
             0,
             65536});
             this.uxTransactionTimeout.Name = "uxTransactionTimeout";
+            this.uxTransactionTimeout.ReadOnly = true;
             this.uxTransactionTimeout.Size = new System.Drawing.Size(55, 20);
             this.uxTransactionTimeout.TabIndex = 21;
             this.uxTransactionTimeout.Value = new decimal(new int[] {
@@ -676,7 +674,6 @@
             this.uxMainSplitContainer.Panel1.ResumeLayout(false);
             this.uxMainSplitContainer.Panel2.ResumeLayout(false);
             this.uxMainSplitContainer.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uxMainSplitContainer)).EndInit();
             this.uxMainSplitContainer.ResumeLayout(false);
             this.uxTabs.ResumeLayout(false);
             this.uxTextModeTab.ResumeLayout(false);
@@ -684,12 +681,10 @@
             this.uxTextSplitContainer.Panel1.PerformLayout();
             this.uxTextSplitContainer.Panel2.ResumeLayout(false);
             this.uxTextSplitContainer.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.uxTextSplitContainer)).EndInit();
             this.uxTextSplitContainer.ResumeLayout(false);
             this.uxBinaryModeTab.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uxTransactionTimeout)).EndInit();
             this.ResumeLayout(false);

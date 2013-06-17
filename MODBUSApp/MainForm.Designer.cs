@@ -55,8 +55,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.uxSentHexBox = new Be.Windows.Forms.HexBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
-            this.lineShape1 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.label15 = new System.Windows.Forms.Label();
             this.uxReceivedHexBox = new Be.Windows.Forms.HexBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -411,25 +409,6 @@
             this.label14.TabIndex = 26;
             this.label14.Text = "Ramka wysłana (HEX):";
             // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(547, 395);
-            this.shapeContainer1.TabIndex = 27;
-            this.shapeContainer1.TabStop = false;
-            // 
-            // lineShape1
-            // 
-            this.lineShape1.Name = "lineShape1";
-            this.lineShape1.X1 = 225;
-            this.lineShape1.X2 = 225;
-            this.lineShape1.Y1 = 10;
-            this.lineShape1.Y2 = 240;
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -526,7 +505,6 @@
             this.Controls.Add(this.uxTransmissionModeComboBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.uxStationComboBox);
-            this.Controls.Add(this.shapeContainer1);
             this.Name = "MainForm";
             this.Text = "MODBUS GKiO1";
             ((System.ComponentModel.ISupportInitialize)(this.uxStationAddress)).EndInit();
@@ -569,8 +547,6 @@
         private System.Windows.Forms.Label label13;
         private Be.Windows.Forms.HexBox uxSentHexBox;
         private System.Windows.Forms.Label label14;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
-        private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.Label label15;
         private Be.Windows.Forms.HexBox uxReceivedHexBox;
         private System.Windows.Forms.Label label16;
