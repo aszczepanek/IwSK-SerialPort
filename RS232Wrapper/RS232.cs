@@ -101,8 +101,8 @@ namespace RS232
             _transactionTimeoutTimer.Elapsed += OnTransactionTimeout;
 
             Port = new SerialPort();
-            Port.ReadTimeout = 1000;
-            Port.WriteTimeout = 1000;
+            Port.ReadTimeout = 2000;
+            Port.WriteTimeout = 2000;
             _dataMode = DataModeEnum.TEXT;
             Port.DataReceived += DataReceivedHandler;
         }
@@ -192,8 +192,8 @@ namespace RS232
         {
             // To my wysyłamy ping.
             _pingIsRunnig = true;
-            Port.WriteTimeout = 1000;
-            Port.ReadTimeout = 1000;
+            Port.WriteTimeout = 2000;
+            Port.ReadTimeout = 2000;
             Port.DiscardInBuffer();
             Port.DiscardOutBuffer();
             Stopwatch pingSW = new Stopwatch();

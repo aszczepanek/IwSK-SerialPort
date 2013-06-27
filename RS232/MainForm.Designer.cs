@@ -508,7 +508,8 @@
             "CR",
             "LF",
             "CR-LF",
-            "Własny"});
+            "Własny",
+            "Brak"});
             this.uxTerminatorComboBox.Location = new System.Drawing.Point(127, 184);
             this.uxTerminatorComboBox.Name = "uxTerminatorComboBox";
             this.uxTerminatorComboBox.Size = new System.Drawing.Size(121, 21);

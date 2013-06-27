@@ -60,6 +60,11 @@ namespace RS232
         // Transakcja - czy MASTER ma interpretować przychodzące ramki (jako odpowiedź).
         private bool _transactionInProgress = false;
 
+        // Oznaczenie czy należy wyczyścić bufor wejściowy przy odbiorze kolejnych danych w trybie RTU
+        // ponieważ została naruszona ciągłość ramki, a czas detekcji ramki jeszcze nie upłynął.
+        private bool _discardInBuffer = false;
+
+        // Liczba podjętych retransmisji.
         private int _retransmittedCount = 0;
 
         // Do retransmisji ostatnio wysłana ramka.
@@ -186,6 +191,10 @@ namespace RS232
             _RTUTimer.Elapsed += OnRTUTimerElapsed;
         }
 
+        /// <summary>
+        /// Sprawdza czy w buforze wejściowym jest ramka ASCII
+        /// </summary>
+        /// <returns>True jeśli w buforze wejściowym znajduje się ramka ASCII.</returns>
         private bool CheckForASCIIFrameInBuffer()
         {
             if (_inBuffer.Contains((byte)':'))
@@ -204,6 +213,11 @@ namespace RS232
             return false;
         }
 
+        /// <summary>
+        /// Akcja podejmowana w przypadku timeoutu transakcji.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnTransactionTimeout(object sender, System.EventArgs e)
         {
             _transactionTimeout.Stop();
@@ -224,11 +238,20 @@ namespace RS232
                 _retransmittedCount = 0;
         }
 
+        /// <summary>
+        /// Akcja podejmowana w przypadku wykrycia nieciągłości ramki.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnIntercharIntervalElapsed(object sender, System.EventArgs e)
         {
             if (_generalTransimssionMode == GeneralTransmissionModeEnum.RTU)
+            {
+                _discardInBuffer = true;
                 return;
+            }
 
+            // Zachowanie dla ASCII
             _intercharInterval.Stop();
             // Unieważnienie bufora
             _inBuffer.Clear();
@@ -236,6 +259,11 @@ namespace RS232
             _CRLFInBuffer = false;
         }
 
+        /// <summary>
+        /// Akcja na wykrycie przerwy sygnalizującej koniec ramki RTU.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnRTUTimerElapsed(object sender, ElapsedEventArgs e)
         {
             _RTUTimer.Stop();
@@ -319,6 +347,13 @@ namespace RS232
             return frame.ToArray();
         }
 
+        /// <summary>
+        /// Funkcja tworzy nową ramkę RTU.
+        /// </summary>
+        /// <param name="destAddress"></param>
+        /// <param name="instructionCode"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private byte[] CreateRTUFrame(byte destAddress, byte instructionCode, string message)
         {
             List<byte> frame = new List<byte>();
@@ -373,7 +408,15 @@ namespace RS232
 
                 case CommunicateType.BinaryDataReceived:
                     _intercharInterval.Stop();
-                    // Dodanie danych do bufora wejściowego i sprawdzenie czy jest tam ramka.
+
+                    // Unieważnienie danych z powodu nieciągłości ramki.
+                    if (_discardInBuffer)
+                    {
+                        _discardInBuffer = false;
+                        _inBuffer.Clear();
+                    }
+
+                    // Dodanie danych do bufora wejściowego i sprawdzenie czy jest tam ramka ASCII dla trybu ASCII.
                     _inBuffer.AddRange(arg.BinaryData);
 
                     if(_generalTransimssionMode == GeneralTransmissionModeEnum.ASCII && CheckForASCIIFrameInBuffer())
@@ -386,6 +429,7 @@ namespace RS232
                         ProcessFrame(frame);
                     }
 
+                    // Zresetowanie timera dla trybu RTU
                     if (_generalTransimssionMode == GeneralTransmissionModeEnum.RTU)
                     {
                         _RTUTimer.Stop();
@@ -400,6 +444,11 @@ namespace RS232
             }
         }
 
+        /// <summary>
+        /// Konwertuje ramkę ASCII na zestaw bajtów odpowiadających danym znakom.
+        /// </summary>
+        /// <param name="frame">Ramka do przetworzenia.</param>
+        /// <returns>Dane w postaci bajtów.</returns>
         private List<byte> ConvertASCIIToBytes(List<byte> frame)
         {
             List<byte> data = new List<byte>();
@@ -430,8 +479,16 @@ namespace RS232
             return data;
         }
 
+        /// <summary>
+        /// Sprawdza czy dane zostały odebrane bez błędów.
+        /// </summary>
+        /// <param name="data">Dane wraz z sumą LRC.</param>
+        /// <returns>True jeśli suma się zgadza.</returns>
         private bool CheckLRC(List<byte> data)
         {
+            if (data.Count == 0)
+                return false;
+
             byte LRC = 0x00;
             for (int i = 0; i < data.Count - 1; i++)
                 LRC += data[i];
@@ -444,13 +501,51 @@ namespace RS232
                 return false;
         }
 
+        /// <summary>
+        /// Sprawdza czy dane zostały odebrane bez błędów.
+        /// </summary>
+        /// <param name="data">Dane wraz z sumą CRC.</param>
+        /// <returns>True jeśli suma się zgadza.</returns>
         private bool CheckCRC(List<byte> data)
         {
-            return true;
+            if (data.Count == 0)
+                return false;
+
+
+            UInt16 crc = 0xFFFF;
+
+            for (int i = 0; i < data.Count - 2; i++)
+            {
+                crc ^= (UInt16)data[i];
+
+                for (int j = 8; j != 0; j--)
+                {
+                    if ((crc & 0x0001) != 0)
+                    {
+                        crc >>= 1;
+                        crc ^= 0xA001;
+                    }
+                    else
+                        crc >>= 1;
+                }
+            }
+
+            if ((byte)crc == data[data.Count - 2] &&
+                (byte)(crc >> 8) == data[data.Count - 1])
+                return true;
+            else
+                return false;
         }
 
+        /// <summary>
+        /// Przetwarza otrzymaną ramkę.
+        /// </summary>
+        /// <param name="frame"></param>
         private void ProcessFrame(List<byte> frame)
         {
+            if (frame.Count == 0)
+                return;
+
             List<byte> data;
 
             // Dane otrzymane.
@@ -572,6 +667,12 @@ namespace RS232
                 return false;
         }
 
+        /// <summary>
+        /// Wysyła odpowiednią ramkę z wiadomością, rozkazem i adresem docelowym.
+        /// </summary>
+        /// <param name="destAddress"></param>
+        /// <param name="instructionCode"></param>
+        /// <param name="message"></param>
         public void SendMessage(byte destAddress, byte instructionCode, string message)
         {
             // Jeśli korzystamy z rozkazu nr 2 to nie ma sensu wysyłać dodatkowych danych
@@ -580,6 +681,7 @@ namespace RS232
                 message = "";
 
             byte[] frame = new byte[] {};
+            // Utworzenie ramki
             switch (_generalTransimssionMode)
             {
                 case GeneralTransmissionModeEnum.ASCII:
@@ -591,9 +693,11 @@ namespace RS232
                     break;
             }
             
+            // Zapisanie utworzonej ramki w razie potrzeby retransmisji.
             _lastFrame = frame;
 
             {
+                // Poinformowanie o wysłanej ramce.
                 MODBUSCommunicateEventArgs arg = new MODBUSCommunicateEventArgs(MODBUSCommunicateType.FrameSent);
                 arg.Frame = frame;
                 Communicate(arg);

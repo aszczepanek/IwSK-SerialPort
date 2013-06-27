@@ -119,6 +119,10 @@ namespace RS232
             }
         }
 
+        /// <summary>
+        /// Wyświetla message boxa z podaną wiadomością.
+        /// </summary>
+        /// <param name="text"></param>
         private void ShowError(string text)
         {
             MessageBox.Show(text, "RS232");
@@ -242,6 +246,10 @@ namespace RS232
                     // własny termiantor
                     string hex = uxTerminatorTextBox.Text;
                     break;
+                case 4:
+                    // zerowy termiantor
+                    terminator = "\0";
+                    break;
                 default:
                     terminator = "\n";
                     break;
@@ -276,6 +284,11 @@ namespace RS232
             }
         }
 
+        /// <summary>
+        /// Odłączenie od portu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxDisconnectButton_Click(object sender, EventArgs e)
         {
             uxDisconnectButton.Enabled = false;
@@ -284,12 +297,22 @@ namespace RS232
             DisableCommunication();
         }
 
+        /// <summary>
+        /// Formularz trybu ręcznego.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxManualControlMenuItem_Click(object sender, EventArgs e)
         {
             ManualControlForm form = new ManualControlForm();
             form.Show();
         }
 
+        /// <summary>
+        /// Zmiana trybu działania tekstowy <---> binarny
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxModeTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (uxTabs.SelectedIndex == 0)
@@ -304,6 +327,11 @@ namespace RS232
             }
         }
 
+        /// <summary>
+        /// Otwarcie formularza pingu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxPingMenuItem_Click(object sender, EventArgs e)
         {
             // Zapamiętanie poprzedniego trybu.
@@ -314,11 +342,21 @@ namespace RS232
             RS232.Instance.SetDataMode(oldDataMode);
         }
 
+        /// <summary>
+        /// Odświeżenie dostępnych portów.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxPortListRefreshButton_Click(object sender, EventArgs e)
         {
             uxPortComboBox.DataSource = SerialPort.GetPortNames();
         }
 
+        /// <summary>
+        /// Czyszczenie odebranych danych binarnych.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxReceivedBinaryClearButton_Click(object sender, EventArgs e)
         {
             DynamicByteProvider data = (DynamicByteProvider)uxReceivedHexBox.ByteProvider;
@@ -326,17 +364,32 @@ namespace RS232
             uxReceivedHexBox.Invalidate();
         }
 
+        /// <summary>
+        /// Czyszczenie odebranych danych tekstowych.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxReceivedTextClearButton_Click(object sender, EventArgs e)
         {
             uxReceivedTextTextBox.Clear();
         }
 
+        /// <summary>
+        /// Wysłanie danych binarnych.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxSendBinaryButton_Click(object sender, EventArgs e)
         {
             DynamicByteProvider data = (DynamicByteProvider)uxTransmitHexBox.ByteProvider;
             RS232.Instance.SendBinary(data.Bytes.ToArray());
         }
 
+        /// <summary>
+        /// Wysłanie pliku.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxSendFileButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -348,6 +401,11 @@ namespace RS232
             }
         }
 
+        /// <summary>
+        /// Wysłanie danych tekstowych.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxSendTextButton_Click(object sender, EventArgs e)
         {
             string[] linesToSend = uxTransmitTextTextBox.Lines;
@@ -407,6 +465,11 @@ namespace RS232
             RS232.Instance.TransactionEnabled = uxTransactionCheckBox.Checked;
         }
 
+        /// <summary>
+        /// Formularz autobaudingu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void uxAutoboudingMenuItem_Click(object sender, EventArgs e)
         {
             DataModeEnum oldDataMode = RS232.Instance.DataMode;
